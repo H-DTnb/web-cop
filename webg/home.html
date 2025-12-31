@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spider Dev</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-theme ltr">
+
+    <nav class="navbar">
+        <div class="logo">
+            <svg width="45" height="45" viewBox="0 0 128 128">
+                <path d="M64 25C42 25 28 42 28 64c0 22 14 39 36 39s36-17 36-39c0-22-14-39-36-39z" fill="black" class="logo-base"/>
+                <path d="M42 58c-4-3-7 3-6 8 2 6 9 8 13 2-3-3-4-6-7-10z" fill="white" class="logo-eye"/>
+                <path d="M86 58c4-3 7 3 6 8-2 6-9 8-13 2 3-3 4-6 7-10z" fill="white" class="logo-eye"/>
+                <line x1="64" y1="25" x2="64" y2="103" stroke="white" stroke-width="1.5" opacity="0.3" class="logo-web"/>
+                <line x1="28" y1="64" x2="100" y2="64" stroke="white" stroke-width="1.5" opacity="0.3" class="logo-web"/>
+            </svg>
+        </div>
+
+        <div class="nav-center">
+            <a href="home.html" class="nav-text-link" data-en="Home" data-fa="خانه">Home</a>
+            <a href="#about" class="nav-text-link" data-en="About Us" data-fa="درباره ما">About Us</a>
+            <a href="socials.html" class="nav-text-link" data-en="Socials" data-fa="شبکه‌ها">Socials</a>
+        </div>
+
+        <div class="nav-main-actions">
+            <a href="#login" class="btn-login" data-en="Login" data-fa="ورود">Login</a>
+            <div class="burger" id="burgerBtn">
+                <div class="line1"></div><div class="line2"></div><div class="line3"></div>
+            </div>
+        </div>
+
+        <div class="nav-right" id="navDrawer">
+            <div class="icon-row">
+                <div class="drawer-icon" id="langBtn" title="Language (L)"><i class="fas fa-globe"></i></div>
+                <div class="drawer-icon" id="themeBtn" title="Theme (T)"><i class="fas fa-moon"></i></div>
+            </div>
+            <div class="icon-row font-controls">
+                <div class="drawer-icon" id="fontDownBtn" title="Decrease Font (-)"><i class="fas fa-minus"></i></div>
+                <span style="font-size: 1.2rem; font-weight: bold;">A</span>
+                <div class="drawer-icon" id="fontUpBtn" title="Increase Font (+)"><i class="fas fa-plus"></i></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="lang-overlay" id="langOverlay">
+        <div class="lang-modal">
+            <h3 data-en="Select Language" data-fa="انتخاب زبان">Select Language</h3>
+            <div class="lang-options">
+                <button onclick="setLanguage('en')">English</button>
+                <button onclick="setLanguage('fa')">فارسی</button>
+            </div>
+            <button class="close-lang" id="closeLangBtn">✕</button>
+        </div>
+    </div>
+
+    <div id="toastBox" class="toast-notification"></div>
+
+    <header class="hero">
+        <h1 id="welcomeText" data-en="Spider Development" data-fa="توسعه اسپایدر">Spider Development</h1>
+    </header>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4 data-en="Quick Links" data-fa="لینک‌های سریع">Quick Links</h4>
+                <ul>
+                    <li><a href="#" data-en="Home" data-fa="خانه">Home</a></li>
+                    <li><a href="#" data-en="About Us" data-fa="درباره ما">About Us</a></li>
+                    <li><a href="#" data-en="Contact" data-fa="تماس">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 data-en="Support" data-fa="پشتیبانی">Support</h4>
+                <ul>
+                    <li><a href="#" data-en="FAQ" data-fa="سوالات متداول">FAQ</a></li>
+                    <li><a href="#" data-en="Privacy Policy" data-fa="سیاست حریم خصوصی">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 data-en="Newsletter" data-fa="خبرنامه">Newsletter</h4>
+                <div class="footer-input">
+                    <input type="email" placeholder="Email...">
+                    <button class="btn-primary" data-en="Join" data-fa="عضویت">Join</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p data-en="© 2025 Spider Development. All Rights Reserved." data-fa="© ۲۰۲۵ توسعه اسپایدر. تمامی حقوق محفوظ است.">© 2025 Spider Development. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const burgerIcon = document.getElementById('burgerBtn');
+        const sideDrawer = document.getElementById('navDrawer');
+        const themeBtn = document.getElementById('themeBtn');
+        const langBtn = document.getElementById('langBtn');
+        const langOverlay = document.getElementById('langOverlay');
+        const closeLangBtn = document.getElementById('closeLangBtn');
+        const fontUpBtn = document.getElementById('fontUpBtn');
+        const fontDownBtn = document.getElementById('fontDownBtn');
+        const toastBox = document.getElementById('toastBox');
+
+        let currentFontSize = 16;
+
+        // Toggle Functions
+        const toggleDrawer = () => {
+            sideDrawer.classList.toggle('nav-active');
+            burgerIcon.classList.toggle('toggle');
+        };
+        const toggleTheme = () => {
+            document.body.classList.toggle('dark-theme');
+            const icon = themeBtn.querySelector('i');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+        };
+        const updateFontSize = (change) => {
+            currentFontSize = Math.min(Math.max(currentFontSize + change, 12), 24);
+            document.body.style.fontSize = currentFontSize + 'px';
+            showNotification(`The font size changed : ${currentFontSize} px`);
+        };
+        const showNotification = (msg) => {
+            toastBox.innerText = msg;
+            toastBox.classList.add('show');
+            setTimeout(() => toastBox.classList.remove('show'), 2500);
+        };
+
+        // Click Events
+        burgerIcon.onclick = toggleDrawer;
+        themeBtn.onclick = toggleTheme;
+        fontUpBtn.onclick = () => updateFontSize(1);
+        fontDownBtn.onclick = () => updateFontSize(-1);
+        langBtn.onclick = () => langOverlay.classList.add('visible');
+        closeLangBtn.onclick = () => langOverlay.classList.remove('visible');
+
+        function setLanguage(lang) {
+            const body = document.body;
+            const elements = document.querySelectorAll('[data-en]');
+            if (lang === 'fa') {
+                body.classList.replace('ltr', 'rtl');
+                elements.forEach(el => el.innerText = el.getAttribute('data-fa'));
+            } else {
+                body.classList.replace('rtl', 'ltr');
+                elements.forEach(el => el.innerText = el.getAttribute('data-en'));
+            }
+            langOverlay.classList.remove('visible');
+            sideDrawer.classList.remove('nav-active');
+            burgerIcon.classList.remove('toggle');
+        }
+
+        // KEYBOARD CONTROLS
+        window.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 't') toggleTheme();
+            if (e.key.toLowerCase() === 'l') langBtn.click();
+            if (e.key === '+') updateFontSize(1);
+            if (e.key === '-') updateFontSize(-1);
+            if (e.key === 'Escape') {
+                langOverlay.classList.remove('visible');
+                sideDrawer.classList.remove('nav-active');
+                burgerIcon.classList.remove('toggle');
+            }
+        });
+    </script>
+</body>
+</html>
